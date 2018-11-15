@@ -4,6 +4,7 @@
   "description": "CLI tool for CareerCon",
   "author": "",
   "license": "ISC",
+  "repository": "https://github.com/Smoczysko/careercon-cli",
   "dependencies": {
     "chalk": "^2.4.1",
     "commander": "^2.19.0"
