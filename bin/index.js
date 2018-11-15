@@ -32,4 +32,20 @@ program
         console.log('Kraków');
     });
 
+program.on('command:*', () => {
+    console.error(chalk.red('Invalid command: %s'));
+    console.error(chalk.red('See --help for a list of available commands.'));
+
+    process.exit(1);
+});
+
 program.parse(process.argv);
+
+if (!process.argv.slice(2).length) {
+    console.warn(chalk.red('No command specified!'));
+    console.warn('');
+
+    program.outputHelp(help => chalk.yellow(help));
+
+    process.exit(1);
+}
