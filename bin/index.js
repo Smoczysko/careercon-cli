@@ -5,6 +5,16 @@ const pkg = require(path.join(__dirname, '../package.json'));
 const program = require('commander');
 const chalk = require('chalk');
 
+const CONFIG_FILE_NAME = 'careercon.json';
+
+const loadAppConfiguration = () => {
+    try {
+        return require(path.resolve(process.cwd(), CONFIG_FILE_NAME));
+    } catch (ex) {
+        return null;
+    }
+};
+
 program
     .version(pkg.version)
     .description(chalk.green(pkg.description));
@@ -31,6 +41,21 @@ program
         console.log('Gdańsk');
         console.log('Kraków');
     });
+
+const appConfiguration = loadAppConfiguration();
+
+if (appConfiguration !== null) {
+    appConfiguration.commands.forEach(commandDefinition => {
+        const command = program
+            .command(commandDefinition.name)
+            .description(commandDefinition.description)
+            .action(require(path.resolve(process.cwd(), commandDefinition.action)));
+
+        if (commandDefinition.alias && commandDefinition.alias !== commandDefinition.name) {
+            command.alias(commandDefinition.alias);
+        }
+    });
+}
 
 program.on('command:*', () => {
     console.error(chalk.red('Invalid command: %s'));
