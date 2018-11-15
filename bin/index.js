@@ -45,20 +45,20 @@ program
 const appConfiguration = loadAppConfiguration();
 
 if (appConfiguration !== null) {
-    appConfiguration.commands.forEach(commandDefinition => {
-        const command = program
-            .command(commandDefinition.name)
-            .description(commandDefinition.description)
-            .action(require(path.resolve(process.cwd(), commandDefinition.action)));
+    appConfiguration.commands.forEach(command => {
+        let appCommand = program.command(command.name);
 
-        if (commandDefinition.alias && commandDefinition.alias !== commandDefinition.name) {
-            command.alias(commandDefinition.alias);
+        if (command.alias && command.alias !== command.name) {
+            appCommand.alias(command.alias);
         }
+
+        appCommand.description(command.description);
+        appCommand.action(require(path.resolve(process.cwd(), command.action)));
     });
 }
 
 program.on('command:*', () => {
-    console.error(chalk.red('Invalid command: %s'));
+    console.error(chalk.red('Invalid command: ', program.args.join(' ')));
     console.error(chalk.red('See --help for a list of available commands.'));
 
     process.exit(1);
