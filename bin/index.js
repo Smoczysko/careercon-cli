@@ -36,7 +36,7 @@ program
         console.log('List of cities:');
         console.log('Warszawa');
         console.log('Wrocław');
-        console.log(chalk.blue('Łódź'));
+        console.log('Łódź');
         console.log('Katowice');
         console.log('Gdańsk');
         console.log('Kraków');
